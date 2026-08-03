@@ -1,4 +1,20 @@
+import { Link, useNavigate } from "react-router-dom";
+import useLogout from "../hooks/useLogout";
+import toast from 'react-hot-toast';
+
 const Navbar = () => {
+    const navigate = useNavigate();
+    const { loading, logout } = useLogout();
+
+    const handleLogout = async () => {
+        const success = await logout();
+
+        if (success) {
+            navigate('/login');
+            toast.success("Logout Successful");
+        }
+    };
+
     return (
         <>
             <div className="navbar bg-neutral shadow-sm">
@@ -10,39 +26,30 @@ const Navbar = () => {
                         <ul
                             tabIndex="-1"
                             className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                            <li><a>Home</a></li>
+                            <li><Link to="/">Home</Link></li>
+                            <li><Link to="/logs">Email Logs</Link></li>
                             <li><a>About</a></li>
                         </ul>
                     </div>
                 </div>
                 <div className="navbar-center">
-                    <a className="btn btn-ghost text-xl">ProMail</a>
+                    <Link to="/" className="btn btn-ghost text-xl">ProMail</Link>
                 </div>
                 <div className="navbar-end">
-                    <div className="tooltip tooltip-bottom" data-tip="AppConfigs">
-                        <button className="btn btn-ghost btn-circle">
-                            <i className="bi bi-database-gear text-lg"></i>
-                        </button>
-                    </div>
                     <div className="tooltip tooltip-bottom" data-tip="Profile">
-                        <div className="flex-none">
-                            <div className="dropdown dropdown-end">
-                                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                                    <i className="bi bi-file-person text-lg"></i>
-                                </div>
-                                <ul
-                                    tabIndex="-1"
-                                    className="menu menu-sm bg-base-300 dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-                                    <li>
-                                        <a className="justify-between">
-                                            Profile
-                                        </a>
-                                    </li>
-                                    <li><a>Settings</a></li>
-                                    <li><a>Logout</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <Link to="/profile" className="btn btn-ghost btn-circle">
+                            <i className="bi bi-file-person text-lg"></i>
+                        </Link>
+                    </div>
+                    <div className="tooltip tooltip-bottom" data-tip="Logout">
+                        <button
+                            type="button"
+                            className="btn btn-ghost btn-circle"
+                            onClick={handleLogout}
+                            disabled={loading}
+                        >
+                            <i className="bi bi-box-arrow-right text-lg"></i>
+                        </button>
                     </div>
                 </div>
             </div>

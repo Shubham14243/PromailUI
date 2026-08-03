@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import useLogin from '../hooks/useLogin';
+import toast from 'react-hot-toast';
 
 const Login = () => {
 
     const [inputs, setInput] = useState({
-        email: '',
-        password: ''
+        email: 'mailroom396@gmail.com',
+        password: 'Shubham@123'
     });
+
+    const {loading, login} = useLogin();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(inputs)
+        const success = await login(inputs);
+        if (success) {
+            toast.success("Login Successful");
+        }
     }
 
     return (
@@ -33,7 +40,9 @@ const Login = () => {
                             onChange={(e) => setInput({ ...inputs, password: e.target.value })}
                         />
 
-                        <button className="btn btn-neutral mt-4" onClick={handleSubmit}>Login</button>
+                        <button className="btn btn-neutral mt-4" onClick={handleSubmit}>
+                            {loading ? (<span className="loading loading-spinner text-success"></span>) : 'Login'}
+                        </button>
                         <Link to="/signup" className='text-center mt-3'>SignUp Instead?</Link>
                     </fieldset>
                 </div >

@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import useSignUp from '../hooks/useSignUp';
+import toast from 'react-hot-toast';
 
 const Signup = () => {
 
@@ -10,9 +12,16 @@ const Signup = () => {
         confirm: ''
     });
 
+    const navigate = useNavigate();
+    const {loading, signUp} = useSignUp();
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(inputs)
+        const success = await signUp(inputs);
+        if (success) {
+            navigate('/login');
+            toast.success("SignUp Successful!\nPlease login to continue.");
+        }
     }
 
     return (
@@ -47,7 +56,9 @@ const Signup = () => {
                             onChange={(e) => setInput({ ...inputs, confirm: e.target.value })}
                         />
 
-                        <button className="btn btn-neutral mt-4" onClick={handleSubmit}>SignUp</button>
+                        <button className="btn btn-neutral mt-4" onClick={handleSubmit}>
+                            {loading ? (<span className="loading loading-spinner text-success"></span>) : 'SignUp'}
+                        </button>
                         <Link to="/login" className='text-center mt-3'>Login Instead?</Link>
                     </fieldset>
                 </div >

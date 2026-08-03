@@ -1,29 +1,28 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
-import useAuthStore from '../context/AuthContext';
 
-const useLogin = () => {
+const useSignUp = () => {
 
     const [loading, setLoading] = useState(false);
-    const{setUser} = useAuthStore();
 
-    const login = async ({email, password}) => {
+    const signUp = async ({ name, email, password, confirm }) => {
         setLoading(true);
         try {
 
-            const success = dataValidate(email,password);
+            const success = dataValidate(name, email, password, confirm);
 
-            if(!success){
+            if (!success) {
                 return;
             }
 
             const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL || 'http://localhost:8080';
-            const res = await fetch(`${backendBaseUrl}/api/v1/auth/login`, {
+            const res = await fetch(`${backendBaseUrl}/api/v1/auth/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
+                    name,
                     email,
                     password
                 }),
@@ -44,16 +43,14 @@ const useLogin = () => {
                     ? data.message
                     : typeof data === 'string' && data.trim()
                         ? data
-                        : 'Login failed';
+                        : 'SignUp failed';
 
                 throw new Error(message);
             }
 
-            if(data === "failure" || data?.type === "error") {
-                throw new Error(data?.message || 'Login failed');
+            if (data === "failure" || data?.type === "error") {
+                throw new Error(data?.message || 'SignUp failed');
             }
-
-            setUser(data.data);
 
             return true;
 
@@ -65,24 +62,34 @@ const useLogin = () => {
         }
     }
 
-    return {loading, login};
+    return { loading, signUp };
 
 }
 
-export default useLogin;
+export default useSignUp;
 
-function dataValidate(email, password){
-    if(!email || !password){
-        toast.error("Please enter Email and Password!");
+function dataValidate(name, email, password, confirm) {
+    if (!name || !email || !password || !confirm) {
+        toast.error("Please fill in all fields!");
         return false;
     }
 
-    if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
+    if (!name.match(/^[a-zA-Z ]{2,50}$/)) {
+        toast.error("Please enter a valid name!");
+        return false;
+    }
+
+    if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)) {
         toast.error("Please enter a valid email!");
         return false;
     }
 
-    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,25}$/)){
+    if (password !== confirm) {
+        toast.error("Passwords do not match!");
+        return false;
+    }
+
+    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,25}$/)) {
         toast.error("Password must be 8-25 characters and include uppercase, lowercase, and a number!");
         return false;
     }
