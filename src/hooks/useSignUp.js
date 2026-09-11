@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
+import useAuthStore from '../context/AuthContext';
+import apiCaller from '../utils/apiCaller';
 
 const useSignUp = () => {
 
     const [loading, setLoading] = useState(false);
+    const { clearUser } = useAuthStore();
 
     const signUp = async ({ name, email, password, confirm }) => {
         setLoading(true);
@@ -15,27 +18,11 @@ const useSignUp = () => {
                 return;
             }
 
-            const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL || 'http://localhost:8080';
-            const res = await fetch(`${backendBaseUrl}/api/v1/auth/signup`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    name,
-                    email,
-                    password
-                }),
-                credentials: 'include',
-            })
+            const {res, data} = await apiCaller('POST', '/api/v1/auth/signup', {name, email, password});
 
-            const contentType = res.headers.get('Content-Type') || '';
-            let data = null;
-
-            if (contentType.includes('application/json')) {
-                data = await res.json().catch(() => null);
-            } else {
-                data = await res.text().catch(() => '');
+            if (res.status === 401) {
+                clearUser();
+                throw new Error('Session expired. Please login again.');
             }
 
             if (!res.ok) {
@@ -43,13 +30,9 @@ const useSignUp = () => {
                     ? data.message
                     : typeof data === 'string' && data.trim()
                         ? data
-                        : 'SignUp failed';
+                        : 'SignUp Failed!';
 
                 throw new Error(message);
-            }
-
-            if (data === "failure" || data?.type === "error") {
-                throw new Error(data?.message || 'SignUp failed');
             }
 
             return true;

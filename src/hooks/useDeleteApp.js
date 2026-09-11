@@ -3,22 +3,15 @@ import toast from 'react-hot-toast';
 import useAuthStore from '../context/AuthContext';
 import apiCaller from '../utils/apiCaller';
 
-const useCreateApp = () => {
+const useDeleteApp = () => {
 
     const [loading, setLoading] = useState(false);
     const { clearUser } = useAuthStore();
 
-    const createApp = async ({name, description}) => {
+    const deleteApp = async (appId) => {
         setLoading(true);
         try {
-
-            const success = dataValidate(name, description);
-
-            if(!success){
-                return;
-            }
-
-            const {res, data} = await apiCaller('POST', '/api/v1/apps', {name, description});
+            const {res, data} = await apiCaller('DELETE', `/api/v1/apps/${appId}`);
 
             if (res.status === 401) {
                 clearUser();
@@ -30,7 +23,7 @@ const useCreateApp = () => {
                     ? data.message
                     : typeof data === 'string' && data.trim()
                         ? data
-                        : 'App Creation failed!';
+                        : 'App Deletion failed!';
 
                 throw new Error(message);
             }
@@ -43,29 +36,10 @@ const useCreateApp = () => {
         } finally {
             setLoading(false);
         }
-    }
+    };
 
-    return {loading, createApp};
+    return {loading, deleteApp};
 
 }
 
-export default useCreateApp;
-
-function dataValidate(name, description){
-    if(!name || !description){
-        toast.error("Please enter Name and Description!");
-        return false;
-    }
-
-    if (!name.match(/^[A-Za-z][A-Za-z0-9 ._/-]{4,49}$/)){
-        toast.error("Please enter a valid name!");
-        return false;
-    }
-
-    if (!description.match(/^(?!\s*$).{4,250}$/)){
-        toast.error("Please enter a valid description!");
-        return false;
-    }
-
-    return true;
-};
+export default useDeleteApp;

@@ -3,16 +3,16 @@ import toast from "react-hot-toast";
 import apiCaller from '../utils/apiCaller';
 import useAuthStore from '../context/AuthContext';
 
-const useGetApps = (refresh, limit = 9, offset = 0) => {
+const useGetTemplates = (appID, refresh, limit = 9, offset = 0) => {
   const [loading, setLoading] = useState(false);
-  const [appsData, setAppsData] = useState([]);
+  const [templateData, setTemplateData] = useState(null);
   const { clearUser } = useAuthStore();
 
   useEffect(() => {
-    const getApps = async () => {
+    const getTemplates = async () => {
       setLoading(true);
       try {
-        const { res, data } = await apiCaller('GET', '/api/v1/apps', {}, { limit, offset });
+        const { res, data } = await apiCaller('GET', `/api/v1/apps/${appID}/templates`, {}, { limit, offset });
 
         if (res.status === 401) {
           clearUser();
@@ -24,24 +24,24 @@ const useGetApps = (refresh, limit = 9, offset = 0) => {
             ? data.message
             : typeof data === 'string' && data.trim()
               ? data
-              : 'Failed to load apps.';
+              : 'Failed to load templates.';
 
           throw new Error(message);
         }
 
-        setAppsData(Array.isArray(data?.data) ? data.data : []);
+        setTemplateData(Array.isArray(data?.data) ? data.data : null);
       } catch (error) {
-        setAppsData([]);
-        toast.error(error.message || 'Something went wrong while loading apps');
+        setTemplateData(null);
+        toast.error(error.message || 'Something went wrong while loading templates');
       } finally {
         setLoading(false);
       }
     };
 
-    getApps();
-  }, [clearUser, refresh]);
+    getTemplates();
+  }, [appID, clearUser, refresh]);
 
-  return { loading, appsData };
+  return { loading, templateData };
 };
 
-export default useGetApps;
+export default useGetTemplates;

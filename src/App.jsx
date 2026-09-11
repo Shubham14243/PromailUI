@@ -1,5 +1,5 @@
 import './App.css'
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useParams } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
@@ -15,13 +15,14 @@ function App() {
 
   const { user } = useAuthStore();
   const authUser = user;
+  const params = useParams();
 
   return (
     <>
         <Routes>
           <Route path='/' element={authUser ? <Home /> : <Navigate to="/login" />} />
-          <Route path='/app' element={authUser ? <AppView /> : <Navigate to="/login" />} />
-          <Route path='/template' element={authUser ? <TemplateView /> : <Navigate to="/login" />} />
+          <Route path='/app/:appid' element={authUser ? <AppView /> : <Navigate to="/login" />} />
+          <Route path='/template/:templateid' element={authUser ? <TemplateView /> : <Navigate to="/login" />} />
           <Route path='/logs' element={authUser ? <EmailLogs /> : <Navigate to="/login" />} />
           <Route path='/profile' element={authUser ? <Profile /> : <Navigate to="/login" />} />
           <Route path='/docs' element={authUser ? <Docs /> : <Navigate to="/login" />} />

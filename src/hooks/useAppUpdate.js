@@ -3,22 +3,28 @@ import toast from 'react-hot-toast';
 import useAuthStore from '../context/AuthContext';
 import apiCaller from '../utils/apiCaller';
 
-const useLogin = () => {
+const useUpdateApp = () => {
 
     const [loading, setLoading] = useState(false);
-    const{setUser, clearUser} = useAuthStore();
+    const { clearUser } = useAuthStore();
 
-    const login = async ({email, password}) => {
+    const updateApp = async (appID, {name, description, status}) => {
         setLoading(true);
         try {
 
-            const success = dataValidate(email,password);
+            const success = dataValidate(name, description, status);
 
             if(!success){
                 return;
             }
 
-            const {res, data} = await apiCaller('POST', '/api/v1/auth/login', {email, password});
+            const requestBody = {
+                name,
+                description,
+                status: status === true ? 'active' : 'inactive'
+            }
+
+            const {res, data} = await apiCaller('PUT', `/api/v1/apps/${appID}`, requestBody);
 
             if (res.status === 401) {
                 clearUser();
@@ -30,12 +36,10 @@ const useLogin = () => {
                     ? data.message
                     : typeof data === 'string' && data.trim()
                         ? data
-                        : 'Login failed.';
+                        : 'App Updation failed!';
 
                 throw new Error(message);
             }
-
-            setUser(data.data);
 
             return true;
 
@@ -47,25 +51,30 @@ const useLogin = () => {
         }
     }
 
-    return {loading, login};
+    return {loading, updateApp};
 
 }
 
-export default useLogin;
+export default useUpdateApp;
 
-function dataValidate(email, password){
-    if(!email || !password){
-        toast.error("Please enter Email and Password!");
+function dataValidate(name, description, status){
+    if(!name || !description || (status !== true && status !== false)){
+        toast.error("Please enter all fields!");
         return false;
     }
 
-    if (!email.match(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/)){
-        toast.error("Please enter a valid email!");
+    if (!name.match(/^[A-Za-z][A-Za-z0-9 ._/-]{4,49}$/)){
+        toast.error("Please enter a valid name!");
         return false;
     }
 
-    if (!password.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,25}$/)){
-        toast.error("Password must be 8-25 characters and include uppercase, lowercase, and a number!");
+    if (!description.match(/^(?!\s*$).{4,250}$/)){
+        toast.error("Please enter a valid description!");
+        return false;
+    }
+
+    if(status !== true && status !== false){
+        toast.error("Please select a valid status!");
         return false;
     }
 

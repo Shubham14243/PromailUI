@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useCreateApp from "../hooks/useCreateApp";
+import toast from "react-hot-toast";
 
-const ListApp = ({ appsData, setRefresh }) => {
+const ListApp = ({ appsData, setRefresh, pages, setPages }) => {
 
     const data = appsData || JSON.parse(localStorage.getItem("proMailApps")) || [];
 
@@ -16,7 +17,6 @@ const ListApp = ({ appsData, setRefresh }) => {
     };
 
     const [query, setQuery] = useState("");
-
     const apps = Array.isArray(data) ? data : [];
 
     const filteredApps = useMemo(() => {
@@ -48,6 +48,15 @@ const ListApp = ({ appsData, setRefresh }) => {
             });
         }
     }
+
+    const handlePagination = (direction) => {
+        if (direction === 'next') {
+            setPages((prev) => ({ ...prev, offset: prev.offset + prev.limit }));
+        } else if (direction === 'prev') {
+            setPages((prev) => ({ ...prev, offset: prev.offset - prev.limit }));
+        }
+        setRefresh((prev) => prev + 1);
+    };
 
     return (
         <>
@@ -94,7 +103,7 @@ const ListApp = ({ appsData, setRefresh }) => {
                 {filteredApps.length === 0 ? (
                     <div className="col-span-1 md:col-span-2 lg:col-span-3 card bg-neutral text-neutral-content">
                         <div className="card-body items-center text-center">
-                            <p>No apps match "{query}".</p>
+                            <p>No apps found.</p>
                         </div>
                     </div>
                 ) : (
@@ -116,21 +125,21 @@ const ListApp = ({ appsData, setRefresh }) => {
                                     <p>Updated: {formatDate(app.updated_at)}</p>
                                 </div>
                                 <div className="card-actions justify-end mt-2">
-                                    <Link to="/app"><button className="btn btn-primary btn-sm">Open</button></Link>
+                                    <Link to={`/app/${app.id}`}>
+                                        <button className="btn btn-primary btn-sm">Open</button>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
                     ))
                 )}
-                {filteredApps.length > 9 && (
-                    <div className="col-span-full flex justify-center mt-2">
-                        <div className="join">
-                            <button className="join-item btn">«</button>
-                            <button className="join-item btn">Page 22</button>
-                            <button className="join-item btn">»</button>
-                        </div>
+                <div className="col-span-full flex justify-center mt-2">
+                    <div className="join">
+                        <button className="join-item btn" onClick={() => handlePagination('prev')}>«</button>
+                        <button className="join-item btn">Page {Math.floor(pages.offset / pages.limit) + 1}</button>
+                        <button className="join-item btn" onClick={() => handlePagination('next')}>»</button>
                     </div>
-                )}
+                </div>
             </div>
 
             {/* Create App Modal */}
@@ -138,7 +147,7 @@ const ListApp = ({ appsData, setRefresh }) => {
                 <div className="modal-box p-1">
                     <div className="card bg-neutral text-neutral-content w-full">
                         <div className="card-body items-center text-center">
-                            <h2 className="card-title">Create your First App!</h2>
+                            <h2 className="card-title">Create New App!</h2>
                             <fieldset className="fieldset rounded-box w-xs p-4">
                                 <input
                                     type="text"
@@ -162,9 +171,6 @@ const ListApp = ({ appsData, setRefresh }) => {
                         </div>
                     </div>
                 </div>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
             </dialog>
         </>
     );

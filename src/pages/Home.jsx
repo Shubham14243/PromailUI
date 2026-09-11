@@ -7,8 +7,13 @@ import useGetApps from "../hooks/useGetApps";
 
 const Home = () => {
 
+    const [pages, setPages] = useState({
+        limit: 9,
+        offset: 0,
+    });
+
     const [refresh, setRefresh] = useState(0);
-    const { loading, appsData } = useGetApps(refresh);
+    const { loading, appsData } = useGetApps(refresh, pages.limit, pages.offset);
 
     return (
         <>
@@ -36,7 +41,7 @@ const Home = () => {
                     <CreateApp setRefresh={setRefresh} />
                 </div>
             ) : (<div className="container mx-auto mt-5 w-full flex items-center justify-center px-4">
-                <ListApp appsData={appsData} setRefresh={setRefresh} />
+                <ListApp appsData={appsData} setRefresh={setRefresh} pages={pages} setPages={setPages} />
             </div>
             )
             }
