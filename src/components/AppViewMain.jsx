@@ -3,6 +3,8 @@ import CreateTemplate from "./CreateTemplate";
 import { Link } from "react-router-dom";
 import useCreateTemplate from "../hooks/useCreateTemplate";
 import toast from "react-hot-toast";
+import useGetAppKey from "../hooks/useGetAppKey";
+import useSendTestEmail from "../hooks/useSendTestEmail";
 
 const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID, pages, setPages }) => {
     const templates = templateData || [];
@@ -66,6 +68,43 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
         setAppDataRefresh((prev) => prev + 1);
     };
 
+
+    const [testEmailInputs, setTestEmailInputs] = useState({
+        appID: appID,
+        mailKey: '',
+        email: '',
+        subject: '',
+        body: '',
+    });
+    const { getAppKey, } = useGetAppKey();
+    const { loading: sendLoading, sendTestEmail } = useSendTestEmail();
+
+    const handleSendTestEmail = async (e) => {
+        e.preventDefault();
+        const fetchedAppKey = await getAppKey(appID);
+        if (!fetchedAppKey) {
+            toast.error("Failed to fetch app key. Please try again.");
+            return;
+        }
+        setTestEmailInputs((prev) => ({ ...prev, mailKey: fetchedAppKey }));
+
+        const success = await sendTestEmail(testEmailInputs);
+        if (success) {
+            setTestEmailInputs({
+                appID: appID,
+                mailKey: fetchedAppKey,
+                email: '',
+                subject: '',
+                body: '',
+            });
+            const modal = document.getElementById('testEmailModal');
+            if (modal) {
+                modal.close();
+            }
+            toast.success("Test Email Sent Successfully");
+        }
+    }
+
     return (
 
         <>
@@ -112,6 +151,11 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
                             </label>
                         </div>
                         <div className="col-span-1 mb-1 flex justify-end gap-2">
+                            <button className="btn btn-outline btn-success"
+                                onClick={() => document.getElementById('testEmailModal').showModal()}
+                            >
+                                <i className="bi bi-envelope"></i> Test Email
+                            </button>
                             <button className="btn btn-outline btn-default"
                                 onClick={() => document.getElementById('CreateTemplateModal').showModal()}
                             >
@@ -199,6 +243,26 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
                                 </button>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </dialog>
+            {/* Test Email */}
+            <dialog id="testEmailModal" className="modal">
+                <div className="modal-box">
+                    <form method="dialog">
+                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                    </form>
+                    <h3 className="font-bold text-lg">Test Email</h3>
+                    <p className="py-4">Enter the details to send a test email.</p>
+                    <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full p-4 mb-3">
+                        <input type="email" className="input w-full" placeholder="Email" value={testEmailInputs.email} onChange={(e) => setTestEmailInputs({ ...testEmailInputs, email: e.target.value })} />
+                        <input type="text" className="input w-full" placeholder="Subject" value={testEmailInputs.subject} onChange={(e) => setTestEmailInputs({ ...testEmailInputs, subject: e.target.value })} />
+                        <textarea className="textarea w-full" placeholder="Body" value={testEmailInputs.body} onChange={(e) => setTestEmailInputs({ ...testEmailInputs, body: e.target.value })}></textarea>
+                    </fieldset>
+                    <div className="card-actions justify-end">
+                        <button className="btn btn-primary" onClick={handleSendTestEmail}>
+                            Send
+                        </button>
                     </div>
                 </div>
             </dialog>

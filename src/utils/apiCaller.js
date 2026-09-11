@@ -16,7 +16,9 @@ const callApi = async (
   const token = tokenOverride ?? storedUser?.auth_token ?? "";
 
   if (params && typeof params === "object") {
-    const queryString = new URLSearchParams(params).toString();
+    const queryString = new URLSearchParams(params)
+      .toString()
+      .replace(/%3A/gi, ":");
     reqEndpoint += `?${queryString}`;
   }
 

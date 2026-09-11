@@ -5,12 +5,13 @@ import useAuthStore from "../context/AuthContext";
 import apiCaller from "../utils/apiCaller";
 
 const ITEMS_PER_PAGE = 10;
+const FILTER_OPTIONS_LIMIT = 30;
 
 const EmailLogs = () => {
-    const apps = [];
-    const templates = [];
     const logs = [];
 
+    const [apps, setApps] = useState([]);
+    const [templates, setTemplates] = useState([]);
     const [toEmail, setToEmail] = useState("");
     const [appId, setAppId] = useState("");
     const [templateId, setTemplateId] = useState("");
@@ -28,6 +29,87 @@ const EmailLogs = () => {
     const [totalLogs, setTotalLogs] = useState(0);
     const [loading, setLoading] = useState(false);
     const { clearUser } = useAuthStore();
+
+    useEffect(() => {
+        let isMounted = true;
+
+        const getFilterOptions = async () => {
+            try {
+                const { res, data } = await apiCaller(
+                    "GET",
+                    "/api/v1/apps",
+                    {},
+                    { limit: FILTER_OPTIONS_LIMIT, offset: 0 }
+                );
+
+                if (res.status === 401) {
+                    clearUser();
+                    throw new Error("Session expired. Please login again.");
+                }
+
+                if (!res.ok) {
+                    throw new Error(data?.message || "Failed to load apps.");
+                }
+
+                const responseApps = Array.isArray(data?.data) ? data.data : [];
+                if (isMounted) {
+                    setApps(responseApps);
+                }
+
+            } catch (error) {
+                if (isMounted) {
+                    toast.error(error.message || "Something went wrong while loading filter options");
+                }
+            }
+        };
+
+        getFilterOptions();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [clearUser]);
+
+    useEffect(() => {
+        if (!appId) return undefined;
+
+        let isMounted = true;
+
+        const getAppTemplates = async () => {
+            try {
+                const { res, data } = await apiCaller(
+                    "GET",
+                    `/api/v1/apps/${appId}/templates`,
+                    {},
+                    { limit: FILTER_OPTIONS_LIMIT, offset: 0 }
+                );
+
+                if (res.status === 401) {
+                    clearUser();
+                    throw new Error("Session expired. Please login again.");
+                }
+
+                if (!res.ok) {
+                    throw new Error(data?.message || "Failed to load templates.");
+                }
+
+                if (isMounted) {
+                    setTemplates(Array.isArray(data?.data) ? data.data : []);
+                }
+            } catch (error) {
+                if (isMounted) {
+                    setTemplates([]);
+                    toast.error(error.message || "Something went wrong while loading templates");
+                }
+            }
+        };
+
+        getAppTemplates();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [appId, clearUser]);
 
     useEffect(() => {
         let isMounted = true;
@@ -117,6 +199,7 @@ const EmailLogs = () => {
         setToEmail("");
         setAppId("");
         setTemplateId("");
+        setTemplates([]);
         setStartDate("");
         setEndDate("");
         setPage(1);
@@ -151,7 +234,11 @@ const EmailLogs = () => {
                     <select
                         className="select select-bordered w-full md:w-48"
                         value={appId}
-                        onChange={(e) => setAppId(e.target.value)}
+                        onChange={(e) => {
+                            setAppId(e.target.value);
+                            setTemplateId("");
+                            setTemplates([]);
+                        }}
                     >
                         <option value="">All Apps</option>
                         {apps.map((a) => (

@@ -55,7 +55,7 @@ const useAppConfigUpdate = () => {
                 open_track: openTrack,
                 click_track: clickTrack,
                 auto_retry: autoRetry,
-                retry_max_count: maxRetryCount,
+                retry_max_count: parseInt(maxRetryCount),
             };
 
             const {res, data} = await apiCaller(action, `/api/v1/config/${appID}`, body);
