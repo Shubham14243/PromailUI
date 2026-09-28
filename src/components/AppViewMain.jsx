@@ -84,14 +84,12 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
         const fetchedAppKey = await getAppKey(appID);
         if (!fetchedAppKey || fetchedAppKey === "") {
             toast.error("Failed to fetch app key. Please try again.");
-            console.log("fetched " + fetchedAppKey)
             return;
         }
-        console.log("fetched " + fetchedAppKey)
-        setTestEmailInputs(() => ({ ...testEmailInputs, mailKey: fetchedAppKey }));
-        console.log("received " + testEmailInputs.mailKey)
+        const emailPayload = { ...testEmailInputs, mailKey: fetchedAppKey };
+        setTestEmailInputs(emailPayload);
 
-        const success = await sendTestEmail(testEmailInputs);
+        const success = await sendTestEmail(emailPayload);
         if (success) {
             toast.success("Test Email Sent Successfully");
         }
