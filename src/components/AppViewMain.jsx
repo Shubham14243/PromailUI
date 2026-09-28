@@ -76,13 +76,13 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
         subject: '',
         body: '',
     });
-    const { getAppKey, } = useGetAppKey();
+    const { getAppKey } = useGetAppKey();
     const { loading: sendLoading, sendTestEmail } = useSendTestEmail();
 
     const handleSendTestEmail = async (e) => {
         e.preventDefault();
         const fetchedAppKey = await getAppKey(appID);
-        if (!fetchedAppKey) {
+        if (!fetchedAppKey || fetchedAppKey === "") {
             toast.error("Failed to fetch app key. Please try again.");
             return;
         }
