@@ -69,18 +69,19 @@ const ListApp = ({ appsData, setRefresh, pages, setPages }) => {
 
     return (
         <>
-            <div className="mt-5 space-y-5">
+            <div className="mt-5 w-[80%] space-y-5">
                 {showDocsSuggestion && (
                     <div className="w-full">
                         <div className="hero relative bg-base-200 min-h-[20%]">
                             <button
                                 type="button"
-                                className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3 z-50"
+                                className="btn btn-sm btn-circle absolute right-3 top-3 z-50 bg-base-300 text-base-content hover:bg-base-content hover:text-base-100"
                                 onClick={handleCloseDocsSuggestion}
                                 aria-label="Close documentation suggestion"
                                 title="Close documentation suggestion"
                             >
-                                <i className="bi bi-x-lg"></i>
+                                <span aria-hidden="true">&times;</span>
+                                <span className="sr-only">Close</span>
                             </button>
                             <div className="hero-content w-full text-center">
                                 <div className="grid w-full grid-cols-1 items-center gap-4 lg:grid-cols-4">
