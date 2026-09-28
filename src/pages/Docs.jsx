@@ -14,6 +14,8 @@ const Docs = () => {
     }
 }`;
 
+    const backendBaseUrl = import.meta.env.VITE_BACKEND_BASE_URL || "http://localhost:8080";
+
     const sections = useMemo(() => [
         {
             title: 'Send Email',
@@ -22,7 +24,7 @@ const Docs = () => {
     --header 'Content-Type: application/json' \\
     --header 'Accept: */*' \\
     --data '${requestBody}'`,
-            url: 'http://localhost:8080/api/v1/email/send',
+            url: backendBaseUrl + '/api/v1/email/send',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
