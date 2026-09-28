@@ -12,37 +12,32 @@ const TemplateView = () => {
 
     const { loading, templateData } = useGetTemplate(templateid, templateDataRefresh);
 
-    if (loading || !templateData) {
-        return (
-            <div className="card bg-neutral text-neutral-content shadow-xl">
-                <div className="card-body">
-                    <h2 className="card-title">
-                        {loading ? "Loading template..." : "Template unavailable"}
-                    </h2>
-                    <p className="text-sm opacity-80">
-                        {loading
-                            ? "Fetching template details."
-                            : "The requested template could not be loaded."}
-                    </p>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <>
             <Navbar />
-
             <div className="container mx-auto mt-5 w-full px-4">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <aside className="md:col-span-1">
-                        <TemplateViewSidebar
-                            templateData={templateData}
-                            setTemplateDataRefresh={setTemplateDataRefresh}
-                        />
+                        {loading || !templateData ? (<div className="flex w-[80%] flex-col gap-4">
+                            <div className="skeleton h-10 w-full"></div>
+                            <div className="skeleton h-40 w-full"></div>
+                            <div className="skeleton h-40 w-full"></div>
+                        </div>) : (
+                            <TemplateViewSidebar
+                                templateData={templateData}
+                                setTemplateDataRefresh={setTemplateDataRefresh}
+                            />
+                        )}
                     </aside>
                     <main className="md:col-span-3">
-                        <TemplateViewMain key={templateData.template_id} templateData={templateData} />
+                        {loading || !templateData ? (<div className="container mx-auto mt-5 w-full flex items-center justify-center">
+                            <div className="flex w-[80%] flex-col gap-4">
+                                <div className="skeleton h-20 w-full"></div>
+                                <div className="skeleton h-120 w-full"></div>
+                            </div>
+                        </div>) : (
+                            <TemplateViewMain key={templateData.template_id} templateData={templateData} />
+                        )}
                     </main>
                 </div>
             </div>

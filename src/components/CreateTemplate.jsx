@@ -53,7 +53,9 @@ const CreateTemplate = ({ setAppDataRefresh, appID }) => {
                         </select>
                     </fieldset>
                     <div className="card-actions justify-end w-full">
-                        <button className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                        <button className="btn btn-primary" onClick={handleSubmit}>
+                            {loading ? (<span className="loading loading-spinner text-success"></span>) : "Submit"}
+                        </button>
                     </div>
                 </div>
             </div>

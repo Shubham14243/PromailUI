@@ -97,12 +97,6 @@ const AppViewSidebar = ({ appData, loading = false, setAppDataRefresh }) => {
             return;
         }
 
-        if (showKey === true) {
-            setAppKey('****************');
-            setShowKey(false);
-            return;
-        }
-
         const success = await refreshAppKey(app.id);
 
         if (success !== true) {
@@ -116,6 +110,7 @@ const AppViewSidebar = ({ appData, loading = false, setAppDataRefresh }) => {
         } else {
             setAppKey('****************');
         }
+        document.getElementById('refreshModal').close();
     }
 
     const [configVar, setConfigVar] = useState({
@@ -203,7 +198,7 @@ const AppViewSidebar = ({ appData, loading = false, setAppDataRefresh }) => {
         }
         const success = await deleteApp(app.id);
         if (success) {
-            navigate('/');
+            navigate('/home');
             document.getElementById('appDeleteModal').close();
             toast.success('App deleted successfully!');
             if (typeof setAppDataRefresh === 'function') {
@@ -218,7 +213,7 @@ const AppViewSidebar = ({ appData, loading = false, setAppDataRefresh }) => {
                 <div className="card bg-neutral text-neutral-content shadow-xl mb-4">
                     <div className="card-body">
                         <div className="flex items-center justify-between">
-                            <h2 className="card-title"><Link to="/">Home</Link> / <Link to={`/app/${app.id}`} >{app.name}</Link></h2>
+                            <h2 className="card-title"><Link to="/home">Home</Link> / <Link to={`/app/${app.id}`} >{app.name}</Link></h2>
                         </div>
                     </div>
                 </div>
@@ -272,17 +267,17 @@ const AppViewSidebar = ({ appData, loading = false, setAppDataRefresh }) => {
                         />
                         <div className="card-actions justify-end mt-3">
                             <button className="btn btn-ghost btn-sm"
-                                onClick={handleKeyRefresh}
+                                onClick={()=>document.getElementById('refreshModal').showModal()}
                                 disabled={keyLoading}
                             >
-                                {keyLoading ? 'Loading...' : 'Refresh'}
+                                {keyLoading ? (<span className="loading loading-spinner text-default"></span>) : 'Refresh'}
                             </button>
                             <button
                                 className="btn btn-ghost btn-sm"
                                 onClick={handleKeyView}
                                 disabled={keyLoading}
                             >
-                                {keyLoading ? 'Loading...' : showKey ? 'Hide' : 'View'}
+                                {keyLoading ? (<span className="loading loading-spinner text-default"></span>) : showKey ? 'Hide' : 'View'}
                             </button>
                         </div>
                     </div>
@@ -331,7 +326,7 @@ const AppViewSidebar = ({ appData, loading = false, setAppDataRefresh }) => {
                             </fieldset>
                             <div className="card-actions justify-end">
                                 <button className="btn btn-primary" onClick={handleAppUpdate}>
-                                    {loading ? (<span className="loading loading-spinner text-success"></span>) : 'Submit'}
+                                    {updateLoading ? (<span className="loading loading-spinner text-success"></span>) : 'Submit'}
                                 </button>
                             </div>
                         </div>
@@ -428,11 +423,27 @@ const AppViewSidebar = ({ appData, loading = false, setAppDataRefresh }) => {
                     <p className="py-4">Are you sure you want to delete this app? This action cannot be undone.</p>
                     <div className="card-actions justify-end">
                         <button className="btn btn-error" onClick={handleAppDelete}>
-                            Yes, Delete!
+                            {deleteLoading ? (<span className="loading loading-spinner text-success"></span>) : "Yes, Delete!" }
                         </button>
                         <button className="btn btn-primary" onClick={() => document.getElementById('appDeleteModal').close()}>
                             No, Cancel!
                         </button>
+                    </div>
+                </div>
+            </dialog>
+
+            {/* Refresh Modal */}
+            <dialog id="refreshModal" className="modal">
+                <div className="modal-box">
+                    <h3 className="font-bold text-lg">Refresh App MailKey?</h3>
+                    <p className="pt-4">Do you confirm you want to refresh your app's mail key?</p>
+                    <p className="py-1">This will invalidate the current mail key and generate a new one.</p>
+                    <p className="pb-2">This action cannot be undone. The current email deliveries can fail.</p>
+                    <div className="modal-action">
+                        <button type="button" onClick={handleKeyRefresh} className="btn btn-error" disabled={keyLoading}>
+                            {keyLoading ? (<span className="loading loading-spinner text-default"></span>) : 'Yes, refresh mailkey'}
+                        </button>
+                        <button type="button" onClick={()=>document.getElementById('refreshModal').close()} className="btn btn-primary">Cancel</button>
                     </div>
                 </div>
             </dialog>

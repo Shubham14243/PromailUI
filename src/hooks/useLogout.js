@@ -13,6 +13,7 @@ const useLogout = () => {
             const {res, data} = await apiCaller('POST', '/api/v1/auth/logout', {});
 
             clearUser();
+            localStorage.setItem("proMailDocsSuggestion", "true");
 
             return true;
         } catch (error) {

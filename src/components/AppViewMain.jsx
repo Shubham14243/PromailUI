@@ -90,29 +90,25 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
 
         const success = await sendTestEmail(testEmailInputs);
         if (success) {
-            setTestEmailInputs({
-                appID: appID,
-                mailKey: fetchedAppKey,
-                email: '',
-                subject: '',
-                body: '',
-            });
-            const modal = document.getElementById('testEmailModal');
-            if (modal) {
-                modal.close();
-            }
             toast.success("Test Email Sent Successfully");
+        }
+        setTestEmailInputs({
+            appID: appID,
+            mailKey: fetchedAppKey,
+            email: '',
+            subject: '',
+            body: '',
+        });
+        const modal = document.getElementById('testEmailModal');
+        if (modal) {
+            modal.close();
         }
     }
 
     return (
 
         <>
-            {templatesLoading ? (
-                <div className="container mx-auto mt-5 w-full flex items-center justify-center">
-                    <span className="loading loading-spinner loading-lg"></span>
-                </div>
-            ) : templateData === null ? (
+            {templateData === null ? (
                 <div className="container mx-auto mt-5 w-full flex items-center justify-center">
                     <CreateTemplate setAppDataRefresh={setAppDataRefresh} appID={appID} />
                 </div>
@@ -261,7 +257,7 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
                     </fieldset>
                     <div className="card-actions justify-end">
                         <button className="btn btn-primary" onClick={handleSendTestEmail}>
-                            Send
+                            {sendLoading ? (<span className="loading loading-spinner text-success"></span>) : "Send"}
                         </button>
                     </div>
                 </div>

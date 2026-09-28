@@ -16,8 +16,8 @@ const ListApp = ({ appsData, setRefresh, pages, setPages }) => {
         });
     };
 
-    const [query, setQuery] = useState("");
     const apps = Array.isArray(data) ? data : [];
+    const [query, setQuery] = useState("");
 
     const filteredApps = useMemo(() => {
         const q = query.trim().toLowerCase();
@@ -58,19 +58,53 @@ const ListApp = ({ appsData, setRefresh, pages, setPages }) => {
         setRefresh((prev) => prev + 1);
     };
 
+    const DOCS_SUGGESTION_KEY = "proMailDocsSuggestion";
+    const [showDocsSuggestion, setShowDocsSuggestion] = useState(localStorage.getItem(DOCS_SUGGESTION_KEY) == "true");
+
+    const handleCloseDocsSuggestion = () => {
+        console.log("Closing docs suggestion");
+        localStorage.setItem(DOCS_SUGGESTION_KEY, "false");
+        setShowDocsSuggestion(false);
+    };
+
     return (
         <>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-5">
-                <div className="col-span-1 flex justify-start gap-2">
-                    <p className="text-2xl px-2">MY APPS</p>
-                    <button className="btn btn-outline btn-default"
-                        onClick={() => document.getElementById('CreateAppModal').showModal()}
-                    >
-                        <i className="bi bi-plus"></i> Create App
-                    </button>
-                </div>
-                <div className="col-span-1 mb-5">
-                    <label className="input w-full">
+            <div className="mt-5 space-y-5">
+                {showDocsSuggestion && (
+                    <div className="w-full">
+                        <div className="hero relative bg-base-200 min-h-[20%]">
+                            <button
+                                type="button"
+                                className="btn btn-sm btn-circle btn-ghost absolute right-3 top-3 z-50"
+                                onClick={handleCloseDocsSuggestion}
+                                aria-label="Close documentation suggestion"
+                                title="Close documentation suggestion"
+                            >
+                                <i className="bi bi-x-lg"></i>
+                            </button>
+                            <div className="hero-content w-full text-center">
+                                <div className="grid w-full grid-cols-1 items-center gap-4 lg:grid-cols-4">
+                                    <div className="flex flex-col items-center justify-start lg:col-span-3">
+                                        <h1 className="text-3xl font-bold sm:text-4xl lg:text-5xl">Welcome to ProMail</h1>
+                                        <p className="p-4 sm:p-6">
+                                            A modern and reliable email management platform designed to help you create, manage, and scale your applications effortlessly.
+                                            Get started quickly with our complete documentation, covering setup, configuration, and usage.
+                                        </p>
+                                    </div>
+                                    <div className="flex items-center justify-center">
+                                        <Link to="/docs#send-email" className="btn btn-primary w-full sm:w-auto"> <i className="bi bi-file-earmark-text"></i> Documentation</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+                <div className="grid grid-cols-1 items-center gap-4 sm:grid-cols-2 lg:grid-cols-[auto_minmax(0,1fr)_auto]">
+                    <div className="flex justify-start gap-2 lg:col-span-1">
+                        <p className="px-2 text-2xl">MY APPS</p>
+                    </div>
+                    <div className="w-full lg:col-span-1 flex items-center justify-center">
+                    <label className="input max-w-md sm:w-full">
                         <svg className="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                             <g
                                 strokeLinejoin="round"
@@ -91,24 +125,25 @@ const ListApp = ({ appsData, setRefresh, pages, setPages }) => {
                             onChange={(e) => setQuery(e.target.value)}
                         />
                     </label>
+                    </div>
+                    <div className="flex justify-stretch gap-2 sm:col-span-2 sm:justify-end lg:col-span-1">
+                    <button className="btn btn-outline btn-success w-full sm:w-auto"
+                        onClick={() => document.getElementById('CreateAppModal').showModal()}
+                    >
+                        <i className="bi bi-plus"></i> Create App
+                    </button>
+                    </div>
                 </div>
-                <div className="col-span-1 flex justify-end gap-2">
-                    <Link to="/docs" className="btn btn-outline btn-success">
-                        <i className="bi bi-file-earmark-text"></i> Email Docs
-                    </Link>
-                    <Link to="/logs" className="btn btn-outline btn-default">
-                        <i className="bi bi-list"></i> Email Logs
-                    </Link>
-                </div>
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {filteredApps.length === 0 ? (
-                    <div className="col-span-1 md:col-span-2 lg:col-span-3 card bg-neutral text-neutral-content">
+                    <div className="col-span-full card bg-neutral text-neutral-content">
                         <div className="card-body items-center text-center">
                             <p>No apps found.</p>
                         </div>
                     </div>
                 ) : (
                     filteredApps.map((app) => (
-                        <div key={app.id} className="card bg-neutral text-neutral-content w-96 shadow-xl">
+                        <div key={app.id} className="card w-full bg-neutral text-neutral-content shadow-xl">
                             <div className="card-body">
                                 <div className="flex items-center justify-between">
                                     <h2 className="card-title">{app.name}</h2>
@@ -133,6 +168,7 @@ const ListApp = ({ appsData, setRefresh, pages, setPages }) => {
                         </div>
                     ))
                 )}
+                </div>
                 <div className="col-span-full flex justify-center mt-2">
                     <div className="join">
                         <button className="join-item btn" onClick={() => handlePagination('prev')}>«</button>
@@ -148,7 +184,7 @@ const ListApp = ({ appsData, setRefresh, pages, setPages }) => {
                     <div className="card bg-neutral text-neutral-content w-full">
                         <div className="card-body items-center text-center">
                             <h2 className="card-title">Create New App!</h2>
-                            <fieldset className="fieldset rounded-box w-xs p-4">
+                            <fieldset className="fieldset w-full max-w-xs rounded-box p-4">
                                 <input
                                     type="text"
                                     className="input"

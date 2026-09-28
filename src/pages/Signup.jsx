@@ -13,7 +13,7 @@ const Signup = () => {
     });
 
     const navigate = useNavigate();
-    const {loading, signUp} = useSignUp();
+    const { loading, signUp } = useSignUp();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,7 +28,7 @@ const Signup = () => {
         <>
             <div className='p-4 h-screen flex items-center justify-center'>
                 <div className='flex flex-col items-center justify-center m-w-96 mx-auto w-96'>
-                    <h2 className='text-xl font-bold'>ProMail</h2>
+                    <Link className="text-xl font-bold" to="/"><i className="bi bi-envelope-paper-fill" /> ProMail</Link>
                     <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-xs border p-4">
                         <legend className="fieldset-legend">User SignUp</legend>
 
@@ -57,9 +57,12 @@ const Signup = () => {
                         />
 
                         <button className="btn btn-neutral mt-4" onClick={handleSubmit}>
-                            {loading ? (<span className="loading loading-spinner text-success"></span>) : 'SignUp'}
+                            {loading ? (<span className="loading loading-bars loading-sm"></span>) : 'SignUp'}
                         </button>
-                        <Link to="/login" className='text-center mt-3'>Login Instead?</Link>
+                        <div className="w-full flex items-center justify-around gap-4">
+                            <Link to="/reset" className='text-center mt-3'>Reset Password</Link>
+                            <Link to="/login" className='text-center mt-3'>Login</Link>
+                        </div>
                     </fieldset>
                 </div >
             </div>

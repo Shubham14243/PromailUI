@@ -41,7 +41,7 @@ const TemplateViewSidebar = ({ templateData, setTemplateDataRefresh }) => {
             return;
         }
 
-        const navigateID = templateData.app_id ? `/app/${templateData.app_id}` : '/';
+        const navigateID = templateData.app_id ? `/app/${templateData.app_id}` : '/home';
 
         const success = await deleteTemplate(templateData.template_id);
         if (success) {
@@ -67,7 +67,7 @@ const TemplateViewSidebar = ({ templateData, setTemplateDataRefresh }) => {
             <div className="card bg-neutral text-neutral-content shadow-xl mb-4">
                 <div className="card-body">
                     <div className="flex items-center justify-between">
-                        <h2 className="card-title"><Link to="/">Home</Link> / <Link to={`/app/${templateData.app_id}`} >App</Link> / <Link to={`/template/${templateData.id}`} >{templateData.name}</Link></h2>
+                        <h2 className="card-title"><Link to="/home">Home</Link> / <Link to={`/app/${templateData.app_id}`} >App</Link> / <Link to={`/template/${templateData.id}`} >{templateData.name}</Link></h2>
                     </div>
                 </div>
             </div>
@@ -162,7 +162,7 @@ const TemplateViewSidebar = ({ templateData, setTemplateDataRefresh }) => {
                     <p className="py-4">Are you sure you want to delete this template? This action cannot be undone.</p>
                     <div className="card-actions justify-end">
                         <button className="btn btn-error" onClick={handleTemplateDelete} disabled={deleteLoading}>
-                            {deleteLoading ? <span className="loading loading-spinner"></span> : 'Yes, Delete!'}
+                            {deleteLoading ? <span className="loading loading-spinner text-danger"></span> : 'Yes, Delete!'}
                         </button>
                         <button className="btn btn-primary" onClick={() => document.getElementById('templateDeleteModal').close()}>
                             No, Cancel!

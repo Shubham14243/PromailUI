@@ -160,7 +160,7 @@ const TemplateViewMain = ({ templateData }) => {
 
     return (
         <>
-            <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
+            <div className="mb-4 flex flex-wrap items-center bg-neutral justify-between gap-3 py-3 px-5 rounded-lg">
                 <div>
                     <p className="text-xl">Subject - {templateData.subject}</p>
                     <p className={`mt-1 text-xs ${hasUnsavedChanges ? "text-warning" : "text-success"}`}>
@@ -174,7 +174,7 @@ const TemplateViewMain = ({ templateData }) => {
                     onClick={handleSaveContent}
                     disabled={saveLoading}
                 >
-                    {saveLoading ? <span className="loading loading-spinner loading-xs" /> : <i className="bi bi-save"></i>}
+                    {saveLoading ? <span className="loading loading-bars loading-sm"></span> : <i className="bi bi-save"></i>}
                     {saveLoading ? "Saving..." : "Save Content"}
                 </button>
             </div>
@@ -196,7 +196,7 @@ const TemplateViewMain = ({ templateData }) => {
                     </div>
                     <textarea
                         ref={htmlEditorRef}
-                        className="textarea textarea-ghost min-h-[32rem] w-full resize-y rounded-none p-4 font-mono text-sm leading-6"
+                        className="textarea textarea-ghost min-h-[38rem] w-full resize-y rounded-none p-4 font-mono text-sm leading-6"
                         value={content}
                         onChange={(event) => setContent(event.target.value)}
                         onKeyDown={handleHtmlEditorKeyDown}
@@ -218,7 +218,7 @@ const TemplateViewMain = ({ templateData }) => {
                         </button>
                     </div>
                     <textarea
-                        className={`textarea textarea-ghost min-h-[32rem] w-full resize-y rounded-none p-4 font-mono text-sm leading-6 ${variablesError ? "textarea-error" : ""}`}
+                        className={`textarea textarea-ghost min-h-[38rem] w-full resize-y rounded-none p-4 font-mono text-sm leading-6 ${variablesError ? "textarea-error" : ""}`}
                         value={variablesText}
                         onChange={handleVariablesChange}
                         placeholder={'{\n  "name": "Ada"\n}'}
@@ -234,7 +234,7 @@ const TemplateViewMain = ({ templateData }) => {
                 </label>
                 <div className="tab-content border-base-300 bg-base-200 p-3">
                     <iframe
-                        className="min-h-[32rem] w-full border border-base-300 bg-white"
+                        className="min-h-[38rem] w-full border border-base-300 bg-white"
                         title="Rendered template preview"
                         srcDoc={previewContent}
                         sandbox=""

@@ -1,0 +1,378 @@
+import { Link } from "react-router-dom";
+
+const Index = () => (
+    <main className="landing landing-dark">
+        <header className="landing-nav">
+            <Link className="landing-brand" to="/" aria-label="ProMail home">
+                <span className="landing-brand-mark"><i className="bi bi-envelope-paper-fill" /></span>
+                <span>pro<span>mail</span></span>
+            </Link>
+            <nav className="landing-nav-links" aria-label="Main navigation">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How it works</a>
+                <a href="#pricing">Pricing</a>
+            </nav>
+            <div className="landing-nav-actions">
+                <Link className="landing-login" to="/login">Log in</Link>
+                <Link className="landing-button landing-button-small" to="/signup">Get started free <i className="bi bi-arrow-up-right" /></Link>
+            </div>
+        </header>
+
+        <section className="landing-hero" aria-labelledby="hero-title">
+            <div className="landing-hero-bg" aria-hidden="true" />
+            <div className="landing-hero-content">
+                <div className="landing-badge">
+                    <span className="landing-badge-dot" />
+                    <span>NEW: Open tracking & Click tracking</span>
+                </div>
+                <h1 id="hero-title">Your emails. <br />Your SMTP. <em>Zero limits.</em></h1>
+                <p className="landing-hero-copy">Send transactional &amp; marketing emails using your own SMTP. Open endpoints, templates, multiple configs, full logs — all free. No domain verification required. Just link your SMTP and start sending via API.</p>
+                <div className="landing-hero-actions">
+                    <Link className="landing-button landing-button-primary" to="/signup">Start free <i className="bi bi-arrow-right" /></Link>
+                    <Link className="landing-button landing-button-secondary" to="/login">View dashboard</Link>
+                </div>
+                <div className="landing-trust">
+                    <div className="landing-trust-icons">
+                        <i className="bi bi-shield-check" title="Secure" />
+                        <i className="bi bi-graph-up-arrow" title="Analytics" />
+                        <i className="bi bi-send-check" title="Delivery" />
+                        <i className="bi bi-code-slash" title="API First" />
+                        <i className="bi bi-infinity" title="Unlimited" />
+                    </div>
+                    <p>Trusted by developers &bull; Free forever &bull; No credit card required</p>
+                </div>
+            </div>
+
+            <div className="dashboard-preview" aria-label="Preview of the ProMail dashboard">
+                <div className="dashboard-preview-header">
+                    <div className="dashboard-preview-dots">
+                        <span /><span /><span />
+                    </div>
+                    <div className="dashboard-preview-title">ProMail Dashboard</div>
+                    <div className="dashboard-preview-search">
+                        <i className="bi bi-search" />
+                        <input type="text" placeholder="Search emails, templates..." readOnly />
+                    </div>
+                </div>
+                <div className="dashboard-preview-body">
+                    <div className="dashboard-sidebar">
+                        <div className="dashboard-sidebar-section">
+                            <span className="dashboard-sidebar-label">APPLICATIONS</span>
+                            <a className="dashboard-sidebar-item active" href="#"><i className="bi bi-app" /><span>My App</span><span className="badge">3</span></a>
+                            <a className="dashboard-sidebar-item" href="#"><i className="bi bi-plus-circle" /><span>Create App</span></a>
+                        </div>
+                        <div className="dashboard-sidebar-section">
+                            <span className="dashboard-sidebar-label">EMAIL</span>
+                            <a className="dashboard-sidebar-item" href="#"><i className="bi bi-send" /><span>Send Email</span></a>
+                            <a className="dashboard-sidebar-item" href="#"><i className="bi bi-journal-text" /><span>Email Logs</span></a>
+                            <a className="dashboard-sidebar-item" href="#"><i className="bi bi-file-earmark-text" /><span>Templates</span></a>
+                        </div>
+                        <div className="dashboard-sidebar-section">
+                            <span className="dashboard-sidebar-label">SMTP CONFIG</span>
+                            <a className="dashboard-sidebar-item" href="#"><i className="bi bi-sliders" /><span>SMTP Settings</span></a>
+                            <a className="dashboard-sidebar-item" href="#"><i className="bi bi-diagram-3" /><span>Multiple Configs</span></a>
+                        </div>
+                    </div>
+                    <div className="dashboard-main">
+                        <div className="dashboard-stats">
+                            <div className="stat-card">
+                                <div className="stat-icon stat-delivered"><i className="bi bi-send-check" /></div>
+                                <div className="stat-info">
+                                    <span className="stat-label">Emails Sent</span>
+                                    <strong className="stat-value">24,847</strong>
+                                    <span className="stat-trend positive"><i className="bi bi-arrow-up" /> +23.5%</span>
+                                </div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-icon stat-delivery"><i className="bi bi-shield-check" /></div>
+                                <div className="stat-info">
+                                    <span className="stat-label">Delivery Rate</span>
+                                    <strong className="stat-value">99.2%</strong>
+                                    <span className="stat-trend positive"><i className="bi bi-arrow-up" /> +0.8%</span>
+                                </div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-icon stat-open"><i className="bi bi-eye" /></div>
+                                <div className="stat-info">
+                                    <span className="stat-label">Open Rate</span>
+                                    <strong className="stat-value">42.1%</strong>
+                                    <span className="stat-trend positive"><i className="bi bi-arrow-up" /> +5.2%</span>
+                                </div>
+                            </div>
+                            <div className="stat-card">
+                                <div className="stat-icon stat-click"><i className="bi bi-mouse" /></div>
+                                <div className="stat-info">
+                                    <span className="stat-label">Click Rate</span>
+                                    <strong className="stat-value">8.7%</strong>
+                                    <span className="stat-trend positive"><i className="bi bi-arrow-up" /> +1.3%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="dashboard-activity">
+                            <div className="dashboard-activity-header">
+                                <h3>Recent Email Activity</h3>
+                                <Link to="/emaillogs" className="view-all">View all <i className="bi bi-arrow-right" /></Link>
+                            </div>
+                            <div className="activity-table">
+                                <div className="activity-row">
+                                    <div className="activity-status delivered"><i className="bi bi-check-circle-fill" /></div>
+                                    <div className="activity-info">
+                                        <strong>Welcome to ProMail</strong>
+                                        <span>alex@startup.io &middot; Template: welcome-v2</span>
+                                    </div>
+                                    <div className="activity-meta">
+                                        <span className="activity-tracking"><i className="bi bi-eye" /> Opened</span>
+                                        <span className="activity-tracking"><i className="bi bi-mouse" /> Clicked</span>
+                                        <time>2 min ago</time>
+                                    </div>
+                                </div>
+                                <div className="activity-row">
+                                    <div className="activity-status delivered"><i className="bi bi-check-circle-fill" /></div>
+                                    <div className="activity-info">
+                                        <strong>Password Reset</strong>
+                                        <span>jordan@devteam.co &middot; Template: reset-password</span>
+                                    </div>
+                                    <div className="activity-meta">
+                                        <span className="activity-tracking"><i className="bi bi-eye" /> Opened</span>
+                                        <time>15 min ago</time>
+                                    </div>
+                                </div>
+                                <div className="activity-row">
+                                    <div className="activity-status sending"><i className="bi bi-arrow-repeat" /></div>
+                                    <div className="activity-info">
+                                        <strong>Weekly Newsletter</strong>
+                                        <span>1,204 subscribers &middot; Template: newsletter-weekly</span>
+                                    </div>
+                                    <div className="activity-meta">
+                                        <span className="activity-tracking"><i className="bi bi-send" /> Sending</span>
+                                        <time>32 min ago</time>
+                                    </div>
+                                </div>
+                                <div className="activity-row">
+                                    <div className="activity-status bounced"><i className="bi bi-x-circle-fill" /></div>
+                                    <div className="activity-info">
+                                        <strong>Order Confirmation</strong>
+                                        <span>sam@shop.io &middot; Template: order-confirm</span>
+                                    </div>
+                                    <div className="activity-meta">
+                                        <span className="activity-tracking error">Bounced</span>
+                                        <time>1 hour ago</time>
+                                    </div>
+                                </div>
+                                <div className="activity-row">
+                                    <div className="activity-status delivered"><i className="bi bi-check-circle-fill" /></div>
+                                    <div className="activity-info">
+                                        <strong>API Key Generated</strong>
+                                        <span>dev@api.io &middot; Template: api-key-created</span>
+                                    </div>
+                                    <div className="activity-meta">
+                                        <span className="activity-tracking"><i className="bi bi-eye" /> Opened</span>
+                                        <span className="activity-tracking"><i className="bi bi-mouse" /> Clicked</span>
+                                        <time>2 hours ago</time>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section className="landing-features" id="features">
+            <div className="landing-section-intro">
+                <span className="landing-section-index">FEATURES</span>
+                <h2>Everything you need<br />to <em>send at scale.</em></h2>
+                <p className="landing-section-desc">Built for developers who want full control over their email infrastructure without the complexity.</p>
+            </div>
+            <div className="landing-feature-grid">
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-send-fill" />
+                    </div>
+                    <h3>Open API Endpoints</h3>
+                    <p>Trigger emails instantly via simple REST API. No SDK lock-in &mdash; just POST to <code>/api/send</code> with your template ID and variables. Works with any language or framework.</p>
+                    <span className="feature-tag">API First</span>
+                </article>
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-server" />
+                    </div>
+                    <h3>Use Your Own SMTP</h3>
+                    <p>Connect any SMTP provider &mdash; SendGrid, Mailgun, Postmark, AWS SES, Gmail, Outlook, or your own server. Your credentials stay encrypted. No domain verification or warmup required.</p>
+                    <span className="feature-tag">BYOSMTP</span>
+                </article>
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-diagram-3-fill" />
+                    </div>
+                    <h3>Multiple SMTP Configs</h3>
+                    <p>Manage multiple SMTP configurations per application. Route transactional emails through one provider, marketing through another. Switch providers instantly without code changes.</p>
+                    <span className="feature-tag">Multi-Config</span>
+                </article>
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-file-earmark-richtext-fill" />
+                    </div>
+                    <h3>Template Management</h3>
+                    <p>Create reusable templates with Handlebars syntax. Version control, live preview, and variable injection. Manage transactional &amp; marketing templates in one place.</p>
+                    <span className="feature-tag">Templates</span>
+                </article>
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-journal-text" />
+                    </div>
+                    <h3>Email Logs &amp; Debugging</h3>
+                    <p>Full visibility into every email sent. Search by recipient, status, template, or date. View raw request/response, headers, and delivery timelines. Debug failed sends in seconds.</p>
+                    <span className="feature-tag">Debugging</span>
+                </article>
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-eye-fill" />
+                    </div>
+                    <h3>Open &amp; Click Tracking</h3>
+                    <p>Automatic pixel-based open tracking and link click tracking. See exactly when recipients engage. Webhook support for real-time analytics integration.</p>
+                    <span className="feature-tag">Analytics</span>
+                </article>
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-braces" />
+                    </div>
+                    <h3>Custom Variable Injection</h3>
+                    <p>Inject dynamic variables into templates at send time. Nested objects, arrays, conditionals, and helpers supported. Personalize every email without template duplication.</p>
+                    <span className="feature-tag">Variables</span>
+                </article>
+                <article className="landing-feature">
+                    <div className="feature-icon-wrapper">
+                        <i className="bi bi-infinity" />
+                    </div>
+                    <h3>Free Forever</h3>
+                    <p>No limits on emails sent, templates created, or SMTP configs. No credit card. No domain verification. Just connect your SMTP and start sending. We make money when you scale &mdash; not before.</p>
+                    <span className="feature-tag">Free</span>
+                </article>
+            </div>
+        </section>
+
+        <section className="landing-cta">
+            <div className="cta-content">
+                <h2>Ready to own your email infrastructure?</h2>
+                <p>Join thousands of developers sending millions of emails with ProMail. Free forever, no strings attached.</p>
+                <div className="cta-actions">
+                    <Link className="landing-button landing-button-primary landing-button-large" to="/signup">Get started free <i className="bi bi-arrow-right" /></Link>
+                    <Link className="landing-button landing-button-secondary landing-button-large" to="/docs">Read the docs <i className="bi bi-book" /></Link>
+                </div>
+            </div>
+        </section>
+
+        <section className="landing-workflow" id="how-it-works">
+            <div className="landing-section-intro">
+                <span className="landing-section-index">HOW IT WORKS</span>
+                <h2>From setup<br />to <em>first send</em> in minutes.</h2>
+            </div>
+            <div className="landing-workflow-steps">
+                <div className="workflow-step">
+                    <div className="workflow-step-number">01</div>
+                    <div className="workflow-step-content">
+                        <h3>Create an Application</h3>
+                        <p>Set up your app workspace. Each app gets its own templates, SMTP configs, and email logs. Perfect for microservices or multi-tenant setups.</p>
+                    </div>
+                </div>
+                <div className="workflow-step">
+                    <div className="workflow-step-number">02</div>
+                    <div className="workflow-step-content">
+                        <h3>Link Your SMTP</h3>
+                        <p>Add one or multiple SMTP configurations. Enter host, port, credentials, and encryption. Test the connection instantly. No domain verification needed.</p>
+                    </div>
+                </div>
+                <div className="workflow-step">
+                    <div className="workflow-step-number">03</div>
+                    <div className="workflow-step-content">
+                        <h3>Create Templates</h3>
+                        <p>Build reusable templates with Handlebars. Add variables like {{name}}, {{order.items}}, {{#if premium}}. Preview live with sample data.</p>
+                    </div>
+                </div>
+                <div className="workflow-step">
+                    <div className="workflow-step-number">04</div>
+                    <div className="workflow-step-content">
+                        <h3>Send via API</h3>
+                        <p>POST to <code>/api/send</code> with template ID and variables. Get instant delivery confirmation. Track opens, clicks, bounces in real-time.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section className="landing-comparison">
+            <div className="landing-section-intro">
+                <span className="landing-section-index">WHY PROMAIL</span>
+                <h2>Not another<br /><em>email service.</em></h2>
+                <p className="landing-section-desc">We don't send emails &mdash; you do. We give you the tools to send on your terms.</p>
+            </div>
+            <div className="comparison-table">
+                <div className="comparison-header">
+                    <div className="comparison-feature">Feature</div>
+                    <div className="comparison-promail">ProMail</div>
+                    <div className="comparison-others">Traditional ESPs</div>
+                </div>
+                <div className="comparison-row">
+                    <span>Use your own SMTP</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="no"><i className="bi bi-x" /></span>
+                </div>
+                <div className="comparison-row">
+                    <span>Multiple SMTP configs per app</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="no"><i className="bi bi-x" /></span>
+                </div>
+                <div className="comparison-row">
+                    <span>No domain verification required</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="no"><i className="bi bi-x" /></span>
+                </div>
+                <div className="comparison-row">
+                    <span>Open API (no SDK lock-in)</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="partial">~</span>
+                </div>
+                <div className="comparison-row">
+                    <span>Open &amp; click tracking</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                </div>
+                <div className="comparison-row">
+                    <span>Full email logs &amp; debugging</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="partial">Limited</span>
+                </div>
+                <div className="comparison-row">
+                    <span>Custom variable injection</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                </div>
+                <div className="comparison-row">
+                    <span>Free tier (generous)</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="partial">Limited</span>
+                </div>
+                <div className="comparison-row">
+                    <span>No vendor lock-in</span>
+                    <span className="yes"><i className="bi bi-check" /></span>
+                    <span className="no"><i className="bi bi-x" /></span>
+                </div>
+            </div>
+        </section>
+
+        <footer className="landing-footer">
+            <Link className="landing-brand" to="/" aria-label="ProMail home">
+                <span className="landing-brand-mark"><i className="bi bi-envelope-paper-fill" /></span>
+                <span>pro<span>mail</span></span>
+            </Link>
+            <p>Your SMTP. Your emails. Your control. Free forever.</p>
+            <div className="footer-links">
+                <Link to="/docs">Documentation</Link>
+                <Link to="/login">Log in</Link>
+                <Link to="/signup">Get started free <i className="bi bi-arrow-up-right" /></Link>
+            </div>
+        </footer>
+    </main>
+);
+
+export default Index;
