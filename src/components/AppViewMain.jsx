@@ -87,7 +87,9 @@ const AppViewMain = ({ templateData, templatesLoading, setAppDataRefresh, appID,
             console.log("fetched " + fetchedAppKey)
             return;
         }
+        console.log("fetched " + fetchedAppKey)
         setTestEmailInputs((prev) => ({ ...prev, mailKey: fetchedAppKey }));
+        console.log("received " + testEmailInputs.mailKey)
 
         const success = await sendTestEmail(testEmailInputs);
         if (success) {

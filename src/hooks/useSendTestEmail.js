@@ -13,7 +13,6 @@ const useSendTestEmail = () => {
         try {
 
             const success = dataValidate(email, subject, body);
-            console.log("received " + mailKey)
 
             if(!success){
                 return;
