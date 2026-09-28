@@ -6,8 +6,8 @@ import toast from 'react-hot-toast';
 const Login = () => {
 
     const [inputs, setInput] = useState({
-        email: 'mailroom396@gmail.com',
-        password: 'Shubham@123'
+        email: '',
+        password: ''
     });
 
     const { loading, login } = useLogin();
